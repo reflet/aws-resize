@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  ImageBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Sub <image-bucket>
+
+Outputs:
+  ImageBucket:
+    Value: !Ref ImageBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-ImageBucket"

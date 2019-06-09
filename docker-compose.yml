@@ -1,0 +1,33 @@
+version: '3'
+services:
+  lambda:
+    container_name: 'lambda'
+    image: local/lambda
+    build:
+      context: ./
+      dockerfile: ./docker/lambda/Dockerfile
+    volumes:
+      - ./dist:/dist
+    environment:
+      CODE_BUCKET: ${CODE_BUCKET}
+      CODE_VERSION: ${CODE_VERSION}
+      IMAGE_BUCKET: ${IMAGE_BUCKET}
+
+  aws-cli:
+    container_name: 'aws-cli'
+    image: local/aws-cli
+    build:
+      context: ./
+      dockerfile: ./docker/aws-cli/Dockerfile
+    tty: true
+    volumes:
+      - ./dist:/dist
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_DEFAULT_OUTPUT: json
+      STACK_NAME: ${STACK_NAME}
+      CODE_BUCKET: ${CODE_BUCKET}
+      CODE_VERSION: ${CODE_VERSION}
+      IMAGE_BUCKET: ${IMAGE_BUCKET}
